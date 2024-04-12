@@ -1,13 +1,19 @@
 package com.satya.testmvvm.response
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 data class DataResponse(
-    var limit: Int?,
+    /*var limit: Int?,*/
     var products: List<Product?>?,
-    var skip: Int?,
-    var total: Int?
-){
+  /*  var skip: Int?,
+    var total: Int?*/
+) {
+    @Entity("ProductDetails")
     data class Product(
-        var brand: String?,
+        @PrimaryKey(autoGenerate = true)
+        val productId: Int?,
+ /*       var brand: String?,
         var category: String?,
         var description: String?,
         var discountPercentage: Double?,
@@ -15,7 +21,7 @@ data class DataResponse(
         var images: List<String?>?,
         var price: Int?,
         var rating: Double?,
-        var stock: Int?,
+        var stock: Int?,*/
         var thumbnail: String?,
         var title: String?
     )

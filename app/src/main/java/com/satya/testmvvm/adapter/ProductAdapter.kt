@@ -70,7 +70,7 @@ class ProductAdapter(private val context: Context, private val userClick: OnClic
                         ArrayList<DataResponse.Product>()
 
                     for (data in filterList) {
-                        if (data.brand!!.toLowerCase()
+                        if (data.thumbnail!!.toLowerCase()
                                 .contains(searchChar)
                         ) {
                             filteredResult.add(data)
