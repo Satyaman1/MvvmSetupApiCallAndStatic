@@ -4,6 +4,9 @@ import android.content.Context
 import com.satya.testmvvm.network.InternetCheck
 import com.satya.testmvvm.network.Service
 import com.satya.testmvvm.response.DataResponse
+import com.satya.testmvvm.response.LoginBody
+import com.satya.testmvvm.response.LoginResponse
+import com.satya.testmvvm.response.TaskTwoResponse
 import com.satya.testmvvm.response.TestBody
 import com.satya.testmvvm.room.Database
 import kotlinx.coroutines.Dispatchers
@@ -14,25 +17,17 @@ import javax.inject.Inject
 
 class Repository @Inject constructor(
     private val service: Service,
-    private val productDatabase: Database,
 ) {
 
-    suspend fun getCountryCodeList(): Response<TestBody> {
+    suspend fun login(model : LoginBody): Response<LoginResponse> {
         return withContext(Dispatchers.IO) {
-            service.getCountryCodeList()
+            service.login(model)
         }
     }
 
-    suspend fun getProduct(): Response<DataResponse> {
+    suspend fun getProductDetails(id : Int): Response<TaskTwoResponse> {
         return withContext(Dispatchers.IO) {
-            /*if (InternetCheck.isInternetAvailable(context)){
-
-            }else{
-
-            }*/
-            productDatabase.productDao()
-                .addProducts(service.getProduct().body()!!.products as List<DataResponse.Product>)
-            service.getProduct()
+            service.getProductDetails(id)
         }
     }
 }

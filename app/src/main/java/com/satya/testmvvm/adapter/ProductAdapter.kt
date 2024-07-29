@@ -10,20 +10,19 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.satya.testmvvm.databinding.RvLayoutBinding
 import com.satya.testmvvm.response.DataResponse
+import com.satya.testmvvm.response.TaskTwoResponse
 
 class ProductAdapter(private val context: Context, private val userClick: OnClick) :
-    RecyclerView.Adapter<ProductAdapter.ViewModel>(), Filterable {
+    RecyclerView.Adapter<ProductAdapter.ViewModel>() {
 
-    private var list: List<DataResponse.Product> = arrayListOf()
-    private var filterList: List<DataResponse.Product> = arrayListOf()
+    private var list: List<TaskTwoResponse.Data.Image?> = arrayListOf()
 
     inner class ViewModel(binding: RvLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         val binding = binding
 
-        fun bind(data: DataResponse.Product, position: Int) {
+        fun bind(data: TaskTwoResponse.Data.Image, position: Int) {
             binding.apply {
-                Glide.with(context).load(data.thumbnail).into(image)
-                title.text = data.title
+                Glide.with(context).load(data.image).into(image)
             }
 
             itemView.setOnClickListener {
@@ -43,59 +42,15 @@ class ProductAdapter(private val context: Context, private val userClick: OnClic
     }
 
     override fun onBindViewHolder(holder: ViewModel, position: Int) {
-        holder.bind(list[position], position)
+        holder.bind(list[position]!!, position)
     }
 
-    fun setList(list: List<DataResponse.Product?>?) {
-        this.list = list as List<DataResponse.Product>
-        this.filterList = list
+    fun setList(list: List<TaskTwoResponse.Data.Image?>?) {
+        this.list = list as List<TaskTwoResponse.Data.Image>
         notifyDataSetChanged()
     }
 
     interface OnClick {
-        fun youSelected(data: DataResponse.Product)
+        fun youSelected(data: TaskTwoResponse.Data.Image)
     }
-
-    override fun getFilter(): Filter {
-        var filter = object : Filter() {
-            override fun performFiltering(p0: CharSequence?): FilterResults {
-                var filterResults = FilterResults()
-                if (p0.isNullOrEmpty()) {
-                    filterResults.values = filterList
-                    filterResults.count = filterList.size
-                } else {
-                    var searchChar = p0.toString().toLowerCase()
-
-                    var filteredResult =
-                        ArrayList<DataResponse.Product>()
-
-                    for (data in filterList) {
-                        if (data.thumbnail!!.toLowerCase()
-                                .contains(searchChar)
-                        ) {
-                            filteredResult.add(data)
-                        }
-                    }
-
-                    filterResults.values = filteredResult
-                    filterResults.count = filteredResult.size
-                }
-
-                return filterResults
-            }
-
-            override fun publishResults(p0: CharSequence?, filterResult: FilterResults?) {
-                try {
-                    if (filterResult != null) {
-                        list =
-                            filterResult.values as List<DataResponse.Product>
-                    }
-                } catch (e: Exception) {
-                    Log.e("SATYA", "publishResults: $e")
-                }
-                notifyDataSetChanged()
-            }
-        }
-        return filter
     }
-}

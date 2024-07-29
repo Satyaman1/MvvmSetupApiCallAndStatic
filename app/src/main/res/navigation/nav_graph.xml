@@ -21,5 +21,14 @@
         android:id="@+id/secondFragment"
         android:name="com.satya.testmvvm.fragment.SecondFragment"
         android:label="fragment_second"
-        tools:layout="@layout/fragment_second" />
+        tools:layout="@layout/fragment_second" >
+        <action
+            android:id="@+id/action_secondFragment_to_viewImageFragment"
+            app:destination="@id/viewImageFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/viewImageFragment"
+        android:name="com.satya.testmvvm.fragment.ViewImageFragment"
+        android:label="ViewImageFragment"
+        tools:layout="@layout/fragment_view_image"/>
 </navigation>
