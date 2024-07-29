@@ -1,14 +1,7 @@
 package com.satya.testmvvm.repository
 
-import android.content.Context
-import com.satya.testmvvm.network.InternetCheck
 import com.satya.testmvvm.network.Service
-import com.satya.testmvvm.response.DataResponse
-import com.satya.testmvvm.response.LoginBody
-import com.satya.testmvvm.response.LoginResponse
-import com.satya.testmvvm.response.TaskTwoResponse
-import com.satya.testmvvm.response.TestBody
-import com.satya.testmvvm.room.Database
+import com.satya.testmvvm.response.NavigationResponse
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.Response
@@ -19,15 +12,9 @@ class Repository @Inject constructor(
     private val service: Service,
 ) {
 
-    suspend fun login(model : LoginBody): Response<LoginResponse> {
+    suspend fun getProduct(platform: Int, restApi: String): Response<NavigationResponse> {
         return withContext(Dispatchers.IO) {
-            service.login(model)
-        }
-    }
-
-    suspend fun getProductDetails(id : Int): Response<TaskTwoResponse> {
-        return withContext(Dispatchers.IO) {
-            service.getProductDetails(id)
+            service.getProducts(platform, restApi)
         }
     }
 }

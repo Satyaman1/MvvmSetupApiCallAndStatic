@@ -7,4 +7,7 @@
     <string name="text">Text</string>
     <string name="image_gallery">Image Gallery</string>
     <string name="product_detail">Product Detail</string>
+    <string name="menu">Menu</string>
+    <string name="ind_inr_en">IND-INR-EN</string>
+    <string name="edit_profile">Edit Profile</string>
 </resources>

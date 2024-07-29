@@ -1,28 +1,25 @@
 package com.satya.testmvvm.adapter
 
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.satya.testmvvm.databinding.RvLayoutBinding
-import com.satya.testmvvm.response.DataResponse
-import com.satya.testmvvm.response.TaskTwoResponse
+import com.satya.testmvvm.response.NavigationResponse
 
 class ProductAdapter(private val context: Context, private val userClick: OnClick) :
     RecyclerView.Adapter<ProductAdapter.ViewModel>() {
 
-    private var list: List<TaskTwoResponse.Data.Image?> = arrayListOf()
+    private var list: List<NavigationResponse.Result.Menu> = arrayListOf()
 
     inner class ViewModel(binding: RvLayoutBinding) : RecyclerView.ViewHolder(binding.root) {
         val binding = binding
 
-        fun bind(data: TaskTwoResponse.Data.Image, position: Int) {
+        fun bind(data: NavigationResponse.Result.Menu, position: Int) {
             binding.apply {
-                Glide.with(context).load(data.image).into(image)
+                Glide.with(context).load(data.icon).into(image)
+                textTV.text = data.label
             }
 
             itemView.setOnClickListener {
@@ -45,12 +42,12 @@ class ProductAdapter(private val context: Context, private val userClick: OnClic
         holder.bind(list[position]!!, position)
     }
 
-    fun setList(list: List<TaskTwoResponse.Data.Image?>?) {
-        this.list = list as List<TaskTwoResponse.Data.Image>
+    fun setList(list: List<NavigationResponse.Result.Menu?>?) {
+        this.list = list as List<NavigationResponse.Result.Menu>
         notifyDataSetChanged()
     }
 
     interface OnClick {
-        fun youSelected(data: TaskTwoResponse.Data.Image)
+        fun youSelected(data: NavigationResponse.Result.Menu)
     }
-    }
+}
