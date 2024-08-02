@@ -1,7 +1,7 @@
 package com.satya.testmvvm.network
 
 object Api {
-    const val BASE_URL = "https://php8demo.socialnetworking.solutions/snsapp/sesapi/"
+    const val BASE_URL = "https://"
     const val AUTHORIZATION = "Authorization"
     const val BEARER = "Bearer"
 

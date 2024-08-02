@@ -5,9 +5,6 @@
     <string name="i_am_first">I am First</string>
     <string name="i_am_second">I am Second</string>
     <string name="text">Text</string>
-    <string name="image_gallery">Image Gallery</string>
-    <string name="product_detail">Product Detail</string>
-    <string name="menu">Menu</string>
-    <string name="ind_inr_en">IND-INR-EN</string>
-    <string name="edit_profile">Edit Profile</string>
+    <string name="type_a_message">Type a message</string>
+    <string name="send">Send</string>
 </resources>

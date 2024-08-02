@@ -32,7 +32,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
                 android:gravity="center"
-                android:text="@string/ind_inr_en"
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 

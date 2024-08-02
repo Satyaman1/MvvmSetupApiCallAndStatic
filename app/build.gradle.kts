@@ -87,4 +87,7 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
     implementation("de.hdodenhof:circleimageview:3.1.0")
+
+    implementation("io.socket:socket.io-client:2.1.0")
+
 }

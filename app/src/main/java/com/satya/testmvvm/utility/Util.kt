@@ -2,7 +2,6 @@ package com.satya.testmvvm.utility
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Patterns
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.Gson
