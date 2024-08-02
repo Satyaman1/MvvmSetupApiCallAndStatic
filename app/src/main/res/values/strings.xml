@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">TestMvvm</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="i_am_first">I am First</string>
+    <string name="i_am_second">I am Second</string>
+    <string name="text">Text</string>
+    <string name="image_gallery">Image Gallery</string>
+    <string name="product_detail">Product Detail</string>
+    <string name="menu">Menu</string>
+    <string name="ind_inr_en">IND-INR-EN</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="apps">Apps</string>
+    <string name="see_more">See More</string>
+    <string name="help_more">Help More</string>
+</resources>
