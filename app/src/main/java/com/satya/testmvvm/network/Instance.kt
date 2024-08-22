@@ -1,12 +1,8 @@
 package com.satya.testmvvm.network
 
-import android.content.Context
-import androidx.room.Room
-import com.satya.testmvvm.room.Database
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -49,26 +45,4 @@ class Instance {
         return retrofitBuilder.client(okHttpClient).build()
             .create(Service::class.java)
     }
-
-    @Singleton
-    @Provides
-    fun getDatabase(@ApplicationContext app: Context): com.satya.testmvvm.room.Database {
-        var INSTANCE: com.satya.testmvvm.room.Database? = null
-        if (INSTANCE == null) {
-            synchronized(this) {
-                INSTANCE =
-                    Room.databaseBuilder(
-                        context = app,
-                        com.satya.testmvvm.room.Database::class.java,
-                        "ProductDetails"
-                    )
-                        .build()
-            }
-        }
-        return INSTANCE!!
-    }
-
-    @Singleton
-    @Provides
-    fun provideYourDao(db: Database) = db.productDao()
 }

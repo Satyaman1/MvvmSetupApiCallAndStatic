@@ -1,20 +1,15 @@
 package com.satya.testmvvm.network
 
-import com.satya.testmvvm.network.Api.GET_PRODUCT_DETAILS
-import com.satya.testmvvm.network.Api.LOGIN
-import com.satya.testmvvm.response.LoginBody
-import com.satya.testmvvm.response.LoginResponse
-import com.satya.testmvvm.response.TaskTwoResponse
+import com.satya.testmvvm.network.Api.SERVICE
+import com.satya.testmvvm.response.ServiceBody
+import com.satya.testmvvm.response.ServiceModel
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
-import retrofit2.http.Query
 
 interface Service {
 
-    @POST(LOGIN)
-    suspend fun login(@Body model: LoginBody): Response<LoginResponse>
+    @POST(SERVICE)
+    suspend fun service(@Body model: ServiceBody): Response<ServiceModel>
 
-    @POST(GET_PRODUCT_DETAILS)
-    suspend fun getProductDetails(@Query("id") id: Int): Response<TaskTwoResponse>
 }

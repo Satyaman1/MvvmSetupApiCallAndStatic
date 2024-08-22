@@ -8,17 +8,17 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import com.satya.testmvvm.R
+import com.satya.testmvvm.adapter.ProductAdapter
+import com.satya.testmvvm.adapter.ServiceParentAdapter
 import com.satya.testmvvm.databinding.FragmentFirstBinding
 import com.satya.testmvvm.network.CustomProgressLoading
 import com.satya.testmvvm.network.NetworkResult
 import com.satya.testmvvm.network.TokenManager
-import com.satya.testmvvm.response.LoginBody
-import com.satya.testmvvm.response.LoginResponse
-import com.satya.testmvvm.response.TestBody
+import com.satya.testmvvm.response.ServiceBody
+import com.satya.testmvvm.response.ServiceModel
 import com.satya.testmvvm.utility.Util
-import com.satya.testmvvm.viewModel.LoginViewModel
+import com.satya.testmvvm.viewModel.ServiceViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -26,8 +26,12 @@ import javax.inject.Inject
 class FirstFragment : Fragment() {
 
     private lateinit var binding: FragmentFirstBinding
-    private val myViewModel by viewModels<LoginViewModel>()
+    private val myViewModel by viewModels<ServiceViewModel>()
     private lateinit var loading: CustomProgressLoading
+    private lateinit var serviceAdapter: ServiceParentAdapter
+    private lateinit var productAdapter: ProductAdapter
+    private var totalAmount = 0.0
+    private var selectedService = 0
 
     @Inject
     lateinit var tokenManager: TokenManager
@@ -39,47 +43,40 @@ class FirstFragment : Fragment() {
 
         loading = CustomProgressLoading(requireActivity())
 
-        binding.loginButton.setOnClickListener {
-            checkIfNotNull()
-        }
+        serviceData()
+
+        setAdapter()
+
+        serviceAdapter()
+
+        binding.priceLLC.visibility = View.INVISIBLE
 
         return binding.root
     }
 
-    private fun checkIfNotNull() {
-        binding.apply {
-            val email = email.text.trim().toString()
-            val password = password.text.trim().toString()
+    private fun serviceData() {
 
-            if (email.isNullOrEmpty()) {
-                Util.toast(requireActivity(), "Please enter your email here")
-            } else if (password.isNullOrEmpty()) {
-                Util.toast(requireActivity(), "Please enter your password here")
-            } else {
-                val model = LoginBody()
-                model.password = password
-                model.email = email
-                loginData(model)
-            }
-        }
-    }
+        val model = ServiceBody()
+        model.offerId = "64f19efe75c0073544cab634"
+        model.partnerId = "63886eafd7390b28d46c9bee"
 
-    private fun loginData(model: LoginBody) {
-        myViewModel.login(model)
-        myViewModel.login.observe(viewLifecycleOwner) {
+        myViewModel.service(model)
+        myViewModel.service.observe(viewLifecycleOwner) {
             loading.hideProgress()
             binding.apply {
                 try {
                     when (it) {
                         is NetworkResult.Success -> {
-                            val body = it.data as LoginResponse
-                            Util.toast(requireActivity(), body.message.toString())
-                            findNavController().navigate(R.id.action_firstFragment_to_secondFragment)
-                            val token =  tokenManager.saveToken(body.token.toString())
+                            val body = it.data as ServiceModel
+                            productAdapter.setList(body.data)
+                            serviceAdapter.apply {
+                                setList(body.data)
+                            }
+                            priceLLC.visibility = View.VISIBLE
                         }
 
                         is NetworkResult.Error -> {
-                            val body = Util.error(it.data, LoginResponse::class.java)
+                            val body = Util.error(it.data, ServiceModel::class.java)
                             Util.toast(requireContext(), "$body")
                         }
 
@@ -93,6 +90,47 @@ class FirstFragment : Fragment() {
 
             }
 
+        }
+    }
+
+    private fun setAdapter() {
+        binding.apply {
+            serviceAdapter =
+                ServiceParentAdapter(requireActivity(),
+                    object : ServiceParentAdapter.DegreeInterface {
+                        override fun sendClick(data: ServiceModel.Data.SubService, position: Int) {
+                            if (data.isSelected == true) {
+                                totalAmount -= data.price.toDouble()
+                                if (selectedService > 0) {
+                                    selectedService--
+                                }
+                                data.isSelected = false
+                            } else {
+                                totalAmount += data.price.toDouble()
+                                selectedService++
+                                data.isSelected = true
+                            }
+                            amountTV.text =
+                                "Services(${selectedService})\n${resources.getString(R.string.rs)}$totalAmount"
+                            Log.e(
+                                "MAX",
+                                "sendClick:$selectedService $totalAmount ${data.isSelected} ${data.price}"
+                            )
+                        }
+                    })
+            serviceTypeRV.adapter = serviceAdapter
+        }
+    }
+
+    private fun serviceAdapter() {
+        binding.apply {
+            productAdapter = ProductAdapter(requireActivity(), object : ProductAdapter.OnClick {
+                override fun youSelected(data: ServiceModel.Data) {
+                    Log.e("MY_CLICK", "youSelected: $data")
+                }
+            })
+
+            serviceRV.adapter = productAdapter
         }
     }
 }
